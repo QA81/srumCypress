@@ -23,3 +23,14 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add("loginViaBackend",()=>{
+    cy.request("POST",`${Cypress.env("apiUrl")}/login`,{
+        email:Cypress.env("testEmail"),
+        password:Cypress.env("testPassword"),
+    }).then((response)=>{
+        window.localStorage.setItem("token",response.body.token)
+        window.localStorage.setItem("userId",response.body.user.id)
+       window.localStorage.setItem("user",JSON.stringify(response.body.user))
+    })
+})
